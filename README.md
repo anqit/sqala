@@ -1,2 +1,2 @@
 # sqala
-A q-learning framework written in scala
+A (soon-to-be) Q-learning framework written in scala
