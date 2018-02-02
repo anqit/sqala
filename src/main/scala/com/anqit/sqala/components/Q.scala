@@ -1,22 +1,29 @@
 package com.anqit.sqala.components
 
-import scala.collection.mutable.Map
+import collection.mutable.Map
 
-class Q(states: Set[State], gamma: Double) {
-    require(gamma >= 0 && gamma < 1)
+trait Q[S <: State, A <: Action] {
+    def values: Map[(S, A), Double]
 
-    val values = Map[(State, Action), Double]().withDefaultValue(0)
+    def apply(s: S, a: A) = values((s, a))
+    def update(s: S, a: A, reward: Double, gamma: Double, newState: S) = {
+        values((s, a)) = newVal(reward, gamma, newState)
+    }
 
-    def getValue(s: State, a: Action): Double = values((s, a))
+    def newVal(reward: Double, gamma: Double, newState: S) = {
+        val maxActionValue = values.filterKeys(k => k._1 == newState).values.max
 
-    def updateValue(s: State, a: Action, r: Double, s2: State): Double = {
-        try {
-            val bestKnownMove = values.filterKeys(k => k._1 == s).values.max
-            val updatedScore = r + gamma * bestKnownMove
-
-            values((s, a)) = updatedScore
-
-            updatedScore
-        }
+        reward + gamma * maxActionValue
     }
 }
+
+object Q {
+    def apply[S <: State, A <: Action](states: Set[S], actions: Set[A]) = {
+        val values = Map[(S, A), Double]()
+        states.foreach(s => actions.foreach(a => values((s, a)) = 0));
+
+        new BasicQ(values)
+    }
+}
+
+class BasicQ[S <: State, A <: Action](val values: Map[(S, A), Double]) extends Q[S, A]

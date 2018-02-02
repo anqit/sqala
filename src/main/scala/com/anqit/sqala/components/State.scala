@@ -1,5 +1,5 @@
 package com.anqit.sqala.components
 
-class State {
+trait State {
 
 }
