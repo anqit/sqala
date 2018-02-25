@@ -19,7 +19,7 @@ object Main {
     val actions = Set(Up, Down, Left, Right)
     val d = new D(board)
     val r = new R(board, d)
-    val runner = new Runner[Tile, Move](states, actions, r, d, board(0)(0), gamma)
+    val runner = new Runner[Tile, Move](states, actions, r, d, gamma)
     val q = runner.run()
 
     def main(args: Array[String]): Unit = {
