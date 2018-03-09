@@ -12,7 +12,7 @@ object Learner {
         def runEpisode[S <: State, A <: Action](a: Agent[S, A], e: Environment[S, A], curr: S): Agent[S, A] = {
             val action = a.selectAction(curr)
             val nextState = e.delta(curr, action)
-            val reward = e.reward(curr, action)
+            val reward = e.reward(curr, action, nextState)
             val newAgent = a.update(curr, action, reward, nextState)
 
             if(e.isTerminal(curr)) {
