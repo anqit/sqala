@@ -7,8 +7,7 @@ import org.scalatest.{BeforeAndAfter, FunSuite}
 class LearnerTest extends FunSuite with BeforeAndAfter {
 
     test("basic") {
-        val mdp = DeterministicGridMdp()
-        mdp.learn()
+        val mdp = DeterministicGridMdp().learn()
         mdp.printQ
         mdp.printPolicy
     }

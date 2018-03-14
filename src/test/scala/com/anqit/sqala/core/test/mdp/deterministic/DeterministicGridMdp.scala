@@ -1,11 +1,14 @@
 package com.anqit.sqala.core.test.mdp.deterministic
 
 import com.anqit.sqala.components.{Action, State}
+import com.anqit.sqala.core.Learner
 import com.anqit.sqala.mdp.{Agent, Environment, MDP, Q}
 
 class DeterministicGridMdp private(agent: Agent[Tile, Move], environment: Environment[Tile, Move], board: Array[Array[Tile]]) extends MDP[Tile, Move](agent, environment) {
     val rows = board.length
     val cols = board(0).length
+
+    override def learn() = new DeterministicGridMdp(Learner.learn(agent, environment), environment, board)
 
     def printQ: Unit = {
         System.out.println("== Q Values =========")
