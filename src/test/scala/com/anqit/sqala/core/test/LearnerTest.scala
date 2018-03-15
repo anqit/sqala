@@ -1,6 +1,7 @@
 package com.anqit.sqala.core.test
 
-import com.anqit.sqala.core.test.mdp.deterministic.{DeterministicGridMdp, Move, Tile}
+import com.anqit.sqala.core.test.mdp.{Move, Tile}
+import com.anqit.sqala.core.test.mdp.deterministic.DeterministicGridMdp
 import com.anqit.sqala.mdp.Q
 import org.scalatest.{BeforeAndAfter, FunSuite}
 

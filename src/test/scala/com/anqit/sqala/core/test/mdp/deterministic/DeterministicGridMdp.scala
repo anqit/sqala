@@ -1,101 +1,11 @@
 package com.anqit.sqala.core.test.mdp.deterministic
 
-import com.anqit.sqala.components.{Action, State}
 import com.anqit.sqala.core.Learner
-import com.anqit.sqala.mdp.{Agent, Environment, MDP, Q}
+import com.anqit.sqala.core.test.mdp.{Down, GridMdp, Left, Move, Right, Tile, Up}
+import com.anqit.sqala.mdp.{Agent, Environment, Q}
 
-class DeterministicGridMdp private(agent: Agent[Tile, Move], environment: Environment[Tile, Move], board: Array[Array[Tile]]) extends MDP[Tile, Move](agent, environment) {
-    val rows = board.length
-    val cols = board(0).length
-
+class DeterministicGridMdp private(agent: Agent[Tile, Move], environment: Environment[Tile, Move], board: Array[Array[Tile]]) extends GridMdp(agent, environment, board) {
     override def learn() = new DeterministicGridMdp(Learner.learn(agent, environment), environment, board)
-
-    def printQ: Unit = {
-        System.out.println("== Q Values =========")
-        val q = agent.q
-
-        for {
-            r <- 0 until rows
-        } {
-            for {
-                c <- 0 until cols
-            } {
-
-                System.out.print("      " + q(board(r)(c), Up) + "       ")
-            }
-            System.out.println
-            for {
-                c <- 0 until cols
-            } {
-                System.out.print(q(board(r)(c), Left))
-                System.out.print(" " + board(r)(c) + " ")
-                System.out.print(q(board(r)(c), Right) + " ")
-            }
-            System.out.println
-            for {
-                c <- 0 until cols
-            } {
-
-                System.out.print("      " + q(board(r)(c), Down) + "       ")
-            }
-            System.out.println
-        }
-        System.out.println("=====================")
-    }
-
-    def printPolicy: Unit = {
-        System.out.println("== Policy ===========")
-        val policy = agent.policy
-
-        for {
-            r <- 0 until rows
-        } {
-            for {
-                c <- 0 until cols
-            } {
-                System.out.print("      ")
-                if(policy(board(r)(c)) == Up) {
-                    System.out.print(Up)
-                } else {
-                    System.out.print(" ")
-                }
-                System.out.print("    ")
-            }
-            System.out.println
-
-            for {
-                c <- 0 until cols
-            } {
-                System.out.print(" ")
-                if(policy(board(r)(c)) == Left) {
-                    System.out.print(Left)
-                } else {
-                    System.out.print(" ")
-                }
-                System.out.print(" " + board(r)(c) + " ")
-                if(policy(board(r)(c)) == Right) {
-                    System.out.print(Right)
-                } else {
-                    System.out.print(" ")
-                }
-            }
-            System.out.println
-
-            for {
-                c <- 0 until cols
-            } {
-                System.out.print("      ")
-                if(policy(board(r)(c)) == Down) {
-                    System.out.print(Down)
-                } else {
-                    System.out.print(" ")
-                }
-                System.out.print("    ")
-            }
-            System.out.println
-        }
-        System.out.println("=====================")
-    }
 }
 
 object DeterministicGridMdp {
@@ -119,7 +29,6 @@ object DeterministicGridMdp {
         if(t == board(0)(board(0).length - 1))
             0.0
         else {
-            val next = delta(board)(t, m)
             if(next == board(0)(board(0).length - 1))
                 100.0
             else 0.0
@@ -136,28 +45,4 @@ object DeterministicGridMdp {
                 t
             else board(next._1)(next._2)
         }
-}
-
-class Tile(val row: Int, val col: Int) extends State {
-    override def toString: String = s"(${row}, ${col})"
-}
-
-abstract class Move extends Action {
-    def transform(): (Int, Int)
-}
-object Up extends Move {
-    override def transform(): (Int, Int) = (-1, 0)
-    override def toString() = "▲"
-}
-object Down extends Move {
-    override def transform(): (Int, Int) = (1, 0)
-    override def toString() = "▼"
-}
-object Left extends Move {
-    override def transform(): (Int, Int) = (0, -1)
-    override def toString() = "◄"
-}
-object Right extends Move {
-    override def transform(): (Int, Int) = (0, 1)
-    override def toString() = "►"
 }
