@@ -7,6 +7,8 @@ class GridMdp protected(agent: Agent[Tile, Move], environment: Environment[Tile,
     val cols = board(0).length
 
     def printQ: Unit = {
+        def printQVal(value: Double) = BigDecimal(value).setScale(1, BigDecimal.RoundingMode.HALF_UP).toDouble
+
         System.out.println("== Q Values =========")
         val q = agent.q
 
@@ -17,22 +19,22 @@ class GridMdp protected(agent: Agent[Tile, Move], environment: Environment[Tile,
                 c <- 0 until cols
             } {
 
-                System.out.print("      " + q(board(r)(c), Up) + "       ")
+                System.out.print("      " + printQVal(q(board(r)(c), Up)) + "       ")
             }
             System.out.println
             for {
                 c <- 0 until cols
             } {
-                System.out.print(q(board(r)(c), Left))
+                System.out.print(printQVal(q(board(r)(c), Left)))
                 System.out.print(" " + board(r)(c) + " ")
-                System.out.print(q(board(r)(c), Right) + " ")
+                System.out.print(printQVal(q(board(r)(c), Right)) + " ")
             }
             System.out.println
             for {
                 c <- 0 until cols
             } {
 
-                System.out.print("      " + q(board(r)(c), Down) + "       ")
+                System.out.print("      " + printQVal(q(board(r)(c), Down)) + "       ")
             }
             System.out.println
         }

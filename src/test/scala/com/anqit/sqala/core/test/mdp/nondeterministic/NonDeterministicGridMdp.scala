@@ -17,7 +17,7 @@ class NonDeterministicGridMdp private(agent: Agent[Tile, Move], environment: Env
 }
 
 object NonDeterministicGridMdp {
-    def apply(rows: Int = 2, cols: Int = 3, gamma: Double = 0.9) = {
+    def apply(rows: Int = 3, cols: Int = 4, gamma: Double = 0.9) = {
         val q = Q.q[Tile, Move](gamma)
         val agent = Agent.qAgent(q, Agent.randomActionSelector(Up, Down, Left, Right))
 
@@ -29,17 +29,22 @@ object NonDeterministicGridMdp {
             board(r)(c) = new Tile(r, c)
         }
 
-        val env = Environment[Tile, Move](reward(board), delta(board), board(0)(0), s => s == board(0)(board(0).length - 1))
+        val env = Environment[Tile, Move](reward(board), delta(board), board(0)(0), isTerminalState(board))
         new NonDeterministicGridMdp(agent, env, board)
     }
 
+    private def isTerminalState(board: Array[Array[Tile]])(s: Tile) =
+        s == board(0)(board(0).length - 1) || s == board(1)(board(1).length - 1)
+
     private def reward(board: Array[Array[Tile]])(t: Tile, m: Move, next: Tile) =
-        if(t == board(0)(board(0).length - 1))
+        if(isTerminalState(board)(t))
             0.0
         else {
             if(next == board(0)(board(0).length - 1))
-                100.0
-            else 0.0
+                1.0
+            else if(next == board(1)(board(1).length - 1))
+                -1.0
+            else -0.03
         }
 
     private def delta(board: Array[Array[Tile]])(t: Tile, m: Move) =
@@ -54,19 +59,12 @@ object NonDeterministicGridMdp {
                 case _ => m
             }).transform()
 
-//                if(roll <= .8) { // success
-//                    m.transform()
-//                } else if (roll <= .9) { // fail, rotate +90
-//                    m.cw.transform()
-//                }
-//                else { // fail, rotate -90
-//                    m.ccw.transform()
-//                }
-
             val next = (t.row + transform._1, t.col + transform._2)
             if(next._1 < 0 || next._1 >= board.length)
                 t
             else if(next._2 < 0 || next._2 >= board(0).length)
+                t
+            else if(next._1 == 1 && next._2 == 1)
                 t
             else board(next._1)(next._2)
         }

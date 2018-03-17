@@ -4,7 +4,7 @@ import com.anqit.sqala.components.{Action, State}
 import com.anqit.sqala.mdp.{Agent, Environment}
 
 object Learner {
-    def learn[S <: State, A <: Action](a: Agent[S, A], e: Environment[S, A], numEpisodes: Int = 100): Agent[S, A] = {
+    def learn[S <: State, A <: Action](a: Agent[S, A], e: Environment[S, A], numEpisodes: Int = 10000): Agent[S, A] = {
         if(numEpisodes > 0) learn(runEpisode(a, e), e, numEpisodes - 1) else a
     }
 

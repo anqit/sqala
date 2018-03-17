@@ -20,7 +20,8 @@ class TableLookupQ[S <: State, A <: Action] private (gamma: Double, private var 
     override def apply(s: S, a: A) = {
         var actionsMap = getActionsMap(s)
         if(!actionsMap.contains(a))
-            actionsMap += a -> 0.0
+            table = table + (s -> (actionsMap + (a -> 0.0)))
+
         table(s)(a)
     }
 

@@ -1,8 +1,7 @@
 package com.anqit.sqala.core.test
 
-import com.anqit.sqala.core.test.mdp.{Move, Tile}
 import com.anqit.sqala.core.test.mdp.deterministic.DeterministicGridMdp
-import com.anqit.sqala.mdp.Q
+import com.anqit.sqala.core.test.mdp.nondeterministic.NonDeterministicGridMdp
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
 class LearnerTest extends FunSuite with BeforeAndAfter {
@@ -14,8 +13,9 @@ class LearnerTest extends FunSuite with BeforeAndAfter {
     }
 
     test("non-deterministic") {
-        val q = Q.ndq[Tile, Move](.9)
-
+        val mdp = NonDeterministicGridMdp().learn()
+        mdp.printQ
+        mdp.printPolicy
     }
 
 }
