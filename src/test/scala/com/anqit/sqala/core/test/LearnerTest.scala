@@ -2,9 +2,9 @@ package com.anqit.sqala.core.test
 
 import com.anqit.sqala.core.test.mdp.deterministic.DeterministicGridMdp
 import com.anqit.sqala.core.test.mdp.nondeterministic.NonDeterministicGridMdp
-import org.scalatest.{BeforeAndAfter, FunSuite}
+import org.scalatest.FunSuite
 
-class LearnerTest extends FunSuite with BeforeAndAfter {
+class LearnerTest extends FunSuite {
 
     test("basic") {
         val mdp = DeterministicGridMdp().learn()

@@ -18,7 +18,7 @@ class TableLookupQ[S <: State, A <: Action] private (gamma: Double, private var 
     def this(gamma: Double) = this(gamma, Map[S, Map[A, Double]]())
 
     override def apply(s: S, a: A) = {
-        var actionsMap = getActionsMap(s)
+        val actionsMap = getActionsMap(s)
         if(!actionsMap.contains(a))
             table = table + (s -> (actionsMap + (a -> 0.0)))
 
@@ -64,9 +64,9 @@ class NonDeterministicQ[S <: State, A <: Action] private (gamma: Double, private
     def this(gamma: Double) = this(gamma, Map[S, Map[A, Double]](), Map[S, Map[A, Int]]())
 
     override def apply(s: S, a: A) = {
-        var actionsMap = getActionsMap(s)
+        val actionsMap = getActionsMap(s)
         if(!actionsMap.contains(a))
-            actionsMap += a -> 0.0
+            table = table + (s -> (actionsMap + (a -> 0.0)))
         table(s)(a)
     }
 

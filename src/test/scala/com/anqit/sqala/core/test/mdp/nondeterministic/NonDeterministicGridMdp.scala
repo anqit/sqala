@@ -2,7 +2,7 @@ package com.anqit.sqala.core.test.mdp.nondeterministic
 
 import com.anqit.sqala.core.Learner
 import com.anqit.sqala.core.test.mdp._
-import com.anqit.sqala.mdp.{Agent, Environment, MDP, Q}
+import com.anqit.sqala.mdp.{Agent, Environment, Q}
 
 import scala.util.Random
 
@@ -18,7 +18,7 @@ class NonDeterministicGridMdp private(agent: Agent[Tile, Move], environment: Env
 
 object NonDeterministicGridMdp {
     def apply(rows: Int = 3, cols: Int = 4, gamma: Double = 0.9) = {
-        val q = Q.q[Tile, Move](gamma)
+        val q = Q.ndq[Tile, Move](gamma)
         val agent = Agent.qAgent(q, Agent.randomActionSelector(Up, Down, Left, Right))
 
         val board = Array.ofDim[Tile](rows, cols)
@@ -48,7 +48,7 @@ object NonDeterministicGridMdp {
         }
 
     private def delta(board: Array[Array[Tile]])(t: Tile, m: Move) =
-        if(t == board(0)(board(0).length - 1))
+        if(isTerminalState(board)(t))
             t
         else {
             val roll = Random.nextDouble()
