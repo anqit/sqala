@@ -21,7 +21,7 @@ object DeterministicGridMdp {
             board(r)(c) = new Tile(r, c)
         }
 
-        val env = Environment[Tile, Move](reward(board), delta(board), board(0)(0), s => s == board(0)(board(0).length - 1))
+        val env = Environment[Tile, Move](reward(board), delta(board), () => board(0)(0), _ == board(0)(board(0).length - 1))
         new DeterministicGridMdp(agent, env, board)
     }
 

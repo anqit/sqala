@@ -29,7 +29,7 @@ object NonDeterministicGridMdp {
             board(r)(c) = new Tile(r, c)
         }
 
-        val env = Environment[Tile, Move](reward(board), delta(board), board(0)(0), isTerminalState(board))
+        val env = Environment[Tile, Move](reward(board), delta(board), () => board(0)(0), isTerminalState(board))
         new NonDeterministicGridMdp(agent, env, board)
     }
 
@@ -43,7 +43,7 @@ object NonDeterministicGridMdp {
             if(next == board(0)(board(0).length - 1))
                 1.0
             else if(next == board(1)(board(1).length - 1))
-                -1.0
+                -5.0
             else -0.03
         }
 

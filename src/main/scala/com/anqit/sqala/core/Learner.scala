@@ -23,6 +23,6 @@ object Learner {
             }
         }
 
-        runEpisode(a, e, e.start)
+        runEpisode(a, e, e.start())
     }
 }
