@@ -4,7 +4,7 @@ import com.anqit.sqala.components.{Action, State}
 
 import scala.util.Random
 
-abstract class Agent[S <: State, A <: Action] {
+trait Agent[S <: State, A <: Action] {
     def update(s: S, a: A, reward: Double, newState: S): Agent[S, A]
     def policy: S => A
     def selectAction(s: S): A
